@@ -1,0 +1,129 @@
+{
+	"info": {
+		"_postman_id": "1d939b37-22df-497a-9252-e60bd7645e98",
+		"name": "CRUD Pedido",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19632788"
+	},
+	"item": [
+		{
+			"name": "Crea Pedido",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"identificador\":    25123930,\r\n    \"nombreCliente\":    \"Omar\",\r\n    \"item\":             \"Pizza\",\r\n    \"domicilio\":        \"Cda Cobre 22 Citlalli\",\r\n    \"fechaPedido\":      \"05/12/23\",\r\n    \"estado\":           \"activo\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/pedidos/enviaPedido",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pedidos",
+						"enviaPedido"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Modifica Pedido",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \r\n    \"identificador\":    25123930,\r\n    \"nombreCliente\":    \"Omar Aldaco\",\r\n    \"item\":             \"Hamburguesa\",\r\n    \"domicilio\":        \"Venustiano Carranza 470\",\r\n    \"fechaPedido\":      null,\r\n    \"estado\":           null\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/pedidos/modificaPedido",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pedidos",
+						"modificaPedido"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consulta Pedido",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "25123930",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/pedidos/pedido",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pedidos",
+						"pedido"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Elimina Pedido",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "25123930",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/pedidos/eliminaPedido",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pedidos",
+						"eliminaPedido"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
