@@ -14,6 +14,7 @@ public class Pedido {
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Long id;
 	private Long identificador;
+	private Long numeroCliente;
 	private String nombreCliente;
 	private String item;
 	private String domicilio;
