@@ -2,8 +2,6 @@ package com.crud.administradorpedidos.modelo.servicio;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.crud.administradorpedidos.dto.PedidoDTO;
 import com.crud.administradorpedidos.dto.PedidoRetornoDTO;
@@ -27,7 +25,7 @@ public class ServicioPedido {
 			if(pedido!=null) {
 				System.out.println(pedido.toString() + " ya existe");
 				return false;
-			}else {
+			} else {
 			
 				pedido = new Pedido();
 				pedido.setIdentificador(pedidoDto.getIdentificador());

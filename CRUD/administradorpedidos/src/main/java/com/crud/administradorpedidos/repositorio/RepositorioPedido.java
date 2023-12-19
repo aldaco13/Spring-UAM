@@ -9,5 +9,6 @@ public interface RepositorioPedido extends JpaRepository<Pedido, Integer>{
 	public Pedido findById(Long id);
 
 	public Pedido findByIdentificador(Long identificador);
-
+	
+	public Pedido findBynumeroCliente(Long numeroCliente);
 }
