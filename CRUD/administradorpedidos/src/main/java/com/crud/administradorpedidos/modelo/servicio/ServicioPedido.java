@@ -1,11 +1,17 @@
 package com.crud.administradorpedidos.modelo.servicio;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.crud.administradorpedidos.dto.PedidoDTO;
-import com.crud.administradorpedidos.dto.PedidoRetornoDTO;
+import com.crud.administradorpedidos.entidades.Cliente;
+import com.crud.administradorpedidos.entidades.ItemPedido;
 import com.crud.administradorpedidos.entidades.Pedido;
+import com.crud.administradorpedidos.repositorio.RepositorioCliente;
+import com.crud.administradorpedidos.repositorio.RepositorioItems;
 import com.crud.administradorpedidos.repositorio.RepositorioPedido;
 
 @Service
@@ -15,22 +21,32 @@ public class ServicioPedido {
 	private RepositorioPedido repositorioPedido;
 	
 	@Autowired
-	private PedidoRetornoDTO pedidoRetornoDto;
+	private RepositorioCliente repositorioCliente;
+	
+	@Autowired
+	private RepositorioItems repositorioItems;
+	
+	@Autowired
+	private PedidoDTO pedidoDto;
 	
 	public boolean pedidoRecibido(PedidoDTO pedidoDto) {
 		
 		if(pedidoDto != null) {
 			
 			Pedido pedido = repositorioPedido.findByIdentificador(pedidoDto.getIdentificador());
+			
 			if(pedido!=null) {
 				System.out.println(pedido.toString() + " ya existe");
 				return false;
 			} else {
 			
+				Cliente cliente = repositorioCliente.findByCliente(pedidoDto.getNumeroCliente());
+				List<ItemPedido> items = obtenItemsPedido(pedidoDto.getItems());
+				
 				pedido = new Pedido();
 				pedido.setIdentificador(pedidoDto.getIdentificador());
-				pedido.setNombreCliente(pedidoDto.getNombreCliente());
-				pedido.setItem(pedidoDto.getItem());
+				pedido.setCliente(cliente);
+				pedido.agregaItem(items);
 				pedido.setDomicilio(pedidoDto.getDomicilio());
 				pedido.setFechaPedido(pedidoDto.getFechaPedido());
 				pedido.setEstado(pedidoDto.getEstado());
@@ -52,12 +68,9 @@ public class ServicioPedido {
 			
 			if(pedido != null) {
 				
-				if(pedidoDto.getNombreCliente() != null) {
-					pedido.setNombreCliente(pedidoDto.getNombreCliente());
-				}
-				
-				if(pedidoDto.getItem() != null) {
-					pedido.setItem(pedidoDto.getItem());
+				if(pedidoDto.getItems() != null) {
+					List<ItemPedido> items = obtenItemsPedido(pedidoDto.getItems());
+					pedido.agregaItem(items);
 				}
 
 				if(pedidoDto.getDomicilio() != null) {
@@ -80,20 +93,21 @@ public class ServicioPedido {
 		}
 	}
 
-	public PedidoRetornoDTO consultaPedido(Long identificador) {
+	public PedidoDTO consultaPedido(Long identificador) {
 		
 		Pedido pedido = repositorioPedido.findByIdentificador(identificador);
+		
 		if(pedido != null) {
 			
-			pedidoRetornoDto.setIdentificador(pedido.getIdentificador());
-			pedidoRetornoDto.setNombreCliente(pedido.getNombreCliente());
-			pedidoRetornoDto.setItem(pedido.getItem());
-			pedidoRetornoDto.setDomicilio(pedido.getDomicilio());
-			pedidoRetornoDto.setFechaPedido(pedido.getFechaPedido());
-			pedidoRetornoDto.setEstado(pedido.getEstado());
+			pedidoDto.setIdentificador(pedido.getIdentificador());
+			pedidoDto.setNumeroCliente(pedido.getCliente().getCliente());
+			//pedidoDto.setItems(pedido.getItems());
+			pedidoDto.setDomicilio(pedido.getDomicilio());
+			pedidoDto.setFechaPedido(pedido.getFechaPedido());
+			pedidoDto.setEstado(pedido.getEstado());
 			
-			System.out.println(pedidoRetornoDto);
-			return pedidoRetornoDto;
+			System.out.println(pedidoDto);
+			return pedidoDto;
 		}else {
 			System.out.println("Pedido no existe");
 			return null;
@@ -113,6 +127,21 @@ public class ServicioPedido {
 			return false;
 		}
 		
+	}
+	
+	public List<ItemPedido> obtenItemsPedido(List<Long> items){
+		List<ItemPedido> itemsPedido = new ArrayList<ItemPedido>();
+		
+		for (Long id : items) {
+			
+			ItemPedido item = repositorioItems.findByCodigo(id);
+			if(item != null) {
+				itemsPedido.add(item);
+			}
+			
+		}
+		
+		return itemsPedido;
 	}
 
 }
