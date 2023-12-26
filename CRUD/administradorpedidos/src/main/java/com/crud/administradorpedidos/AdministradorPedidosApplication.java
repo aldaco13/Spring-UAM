@@ -28,13 +28,29 @@ public class AdministradorPedidosApplication {
 	}
 	
 	public void inicializaItems() {
-		ItemPedido item1 = new ItemPedido();
-		item1.setCodigo(1L);
-		item1.setNombre("Pizza");
-		item1.setDescripcion("Pizza al horno");
-		item1.setPrecio(300L);
+		ItemPedido item = new ItemPedido();
+		item.setCodigo(1L);
+		item.setNombre("Pizza");
+		item.setDescripcion("Pizza al horno");
+		item.setPrecio(300L);
 		
-		repositorioItems.save(item1);
+		repositorioItems.save(item);
+		
+		item = new ItemPedido();
+		item.setCodigo(2L);
+		item.setNombre("Hamburgues");
+		item.setDescripcion("Hamburguesa Hawaiana");
+		item.setPrecio(100L);
+		
+		repositorioItems.save(item);
+		
+		item = new ItemPedido();
+		item.setCodigo(3L);
+		item.setNombre("Burrito");
+		item.setDescripcion("Burrito de arrachera");
+		item.setPrecio(150L);
+		
+		repositorioItems.save(item);
 		
 	}
 

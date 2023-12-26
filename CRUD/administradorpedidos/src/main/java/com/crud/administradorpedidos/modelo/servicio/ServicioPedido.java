@@ -100,7 +100,7 @@ public class ServicioPedido {
 		if(pedido != null) {
 			
 			pedidoDto.setIdentificador(pedido.getIdentificador());
-			pedidoDto.setNumeroCliente(pedido.getCliente().getCliente());
+			//pedidoDto.setNumeroCliente(pedido.getCliente().getNumeroCliente());
 			//pedidoDto.setItems(pedido.getItems());
 			pedidoDto.setDomicilio(pedido.getDomicilio());
 			pedidoDto.setFechaPedido(pedido.getFechaPedido());
