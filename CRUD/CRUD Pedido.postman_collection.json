@@ -1,0 +1,297 @@
+{
+	"info": {
+		"_postman_id": "1d939b37-22df-497a-9252-e60bd7645e98",
+		"name": "CRUD Pedido",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19632788"
+	},
+	"item": [
+		{
+			"name": "Cliente",
+			"item": [
+				{
+					"name": "Crea Cliente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cliente\": 2163078388,\r\n\t\"nombre\": \"Omar\",\r\n\t\"apellidoPaterno\": \"Aldaco\",\r\n\t\"apellidoMaterno\": \"Montalvo\",\r\n    \"correo\": \"oaldacom@truper.com\",\r\n    \"calle\": \"Cda Cobre\",\r\n    \"numero\": 22,\r\n\t\"colonia\": \"Citlalli\",\r\n\t\"delegacion\": \"Iztapalapa\",\r\n\t\"cp\": \"09660\",\r\n\t\"ciudad\": \"CDMX\"\t\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/cliente/registraCliente",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cliente",
+								"registraCliente"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Valida Existe Cliente",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "oaldacom@truper.com",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/cliente/validaExisteCliente",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cliente",
+								"validaExisteCliente"
+							],
+							"query": [
+								{
+									"key": "correo",
+									"value": "oaldacom@truper.com\n",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consulta Cliente Numero",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "2163078388",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/cliente/consultaClienteNumero",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cliente",
+								"consultaClienteNumero"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modifica Cliente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cliente\": 2163078388,\r\n\t\"nombre\": \"Omar\",\r\n\t\"apellidoPaterno\": \"Aldaco\",\r\n\t\"apellidoMaterno\": \"Montalvo\",\r\n    \"correo\": \"oaldacom@truper.com\",\r\n    \"calle\": \"Cda Cobre\",\r\n    \"numero\": 22,\r\n\t\"colonia\": \"Citlalli\",\r\n\t\"delegacion\": \"Iztapalapa\",\r\n\t\"cp\": \"09660\",\r\n\t\"ciudad\": \"CDMX\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/cliente/actualizaCliente",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cliente",
+								"actualizaCliente"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Elimina Cliente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "2163078388",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/cliente/eliminaCliente",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cliente",
+								"eliminaCliente"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pedido",
+			"item": [
+				{
+					"name": "Crea Pedido",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"identificador\":    25123930,\r\n    \"nombreCliente\":    \"Omar\",\r\n    \"item\":             \"Pizza\",\r\n    \"domicilio\":        \"Cda Cobre 22 Citlalli\",\r\n    \"fechaPedido\":      \"05/12/23\",\r\n    \"estado\":           \"activo\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/pedidos/enviaPedido",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pedidos",
+								"enviaPedido"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modifica Pedido",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n    \"identificador\":    25123930,\r\n    \"nombreCliente\":    \"Omar Aldaco\",\r\n    \"item\":             \"Hamburguesa\",\r\n    \"domicilio\":        \"Venustiano Carranza 470\",\r\n    \"fechaPedido\":      null,\r\n    \"estado\":           null\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/pedidos/modificaPedido",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pedidos",
+								"modificaPedido"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consulta Pedido",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "25123930",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/pedidos/pedido",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pedidos",
+								"pedido"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Elimina Pedido",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "25123930",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/pedidos/eliminaPedido",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pedidos",
+								"eliminaPedido"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
