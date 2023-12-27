@@ -32,7 +32,7 @@ public class Pedido {
 	private String estado;
 	
 	@OneToMany(targetEntity = ItemPedido.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "itemsPedido")
+	@JoinColumn(name = "idPedido")
 	private final List<ItemPedido> items = new ArrayList<>();
 	
 	public void agregaItem(List<ItemPedido> item) {

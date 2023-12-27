@@ -2,11 +2,13 @@ package com.crud.administradorpedidos.modelo.servicio;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.crud.administradorpedidos.dto.PedidoDTO;
+import com.crud.administradorpedidos.dto.PedidoRetornoDTO;
 import com.crud.administradorpedidos.entidades.Cliente;
 import com.crud.administradorpedidos.entidades.ItemPedido;
 import com.crud.administradorpedidos.entidades.Pedido;
@@ -27,15 +29,18 @@ public class ServicioPedido {
 	private RepositorioItems repositorioItems;
 	
 	@Autowired
-	private PedidoDTO pedidoDto;
+	private PedidoRetornoDTO pedidoRetornoDto;
 	
 	public boolean pedidoRecibido(PedidoDTO pedidoDto) {
 		
 		if(pedidoDto != null) {
 			
-			Pedido pedido = repositorioPedido.findByIdentificador(pedidoDto.getIdentificador());
+			Optional<Pedido> pedidoOpt = repositorioPedido.findByIdentificador(pedidoDto.getIdentificador());
+			Pedido pedido = null;
 			
-			if(pedido!=null) {
+			if(pedidoOpt.isPresent()) {
+				
+				pedido = pedidoOpt.get();
 				System.out.println(pedido.toString() + " ya existe");
 				return false;
 			} else {
@@ -64,9 +69,12 @@ public class ServicioPedido {
 	public boolean modificaPedido(PedidoDTO pedidoDto) {
 		
 		if(pedidoDto != null) {
-			Pedido pedido = repositorioPedido.findByIdentificador(pedidoDto.getIdentificador());
 			
-			if(pedido != null) {
+			Optional<Pedido> pedidoOpt  = repositorioPedido.findByIdentificador(pedidoDto.getIdentificador());
+			
+			if(pedidoOpt.isPresent()) {
+				
+				Pedido pedido = pedidoOpt.get();
 				
 				if(pedidoDto.getItems() != null) {
 					List<ItemPedido> items = obtenItemsPedido(pedidoDto.getItems());
@@ -93,21 +101,25 @@ public class ServicioPedido {
 		}
 	}
 
-	public PedidoDTO consultaPedido(Long identificador) {
+	public PedidoRetornoDTO consultaPedido(Long identificador) {
 		
-		Pedido pedido = repositorioPedido.findByIdentificador(identificador);
+		Optional<Pedido> pedidoOpt = repositorioPedido.findByIdentificador(identificador);
 		
-		if(pedido != null) {
+		if(pedidoOpt.isPresent()) {
 			
-			pedidoDto.setIdentificador(pedido.getIdentificador());
-			//pedidoDto.setNumeroCliente(pedido.getCliente().getNumeroCliente());
-			//pedidoDto.setItems(pedido.getItems());
-			pedidoDto.setDomicilio(pedido.getDomicilio());
-			pedidoDto.setFechaPedido(pedido.getFechaPedido());
-			pedidoDto.setEstado(pedido.getEstado());
+			Pedido pedido = pedidoOpt.get();
+			Cliente cliente = repositorioCliente.findByCliente(pedido.getCliente().getCliente());
 			
-			System.out.println(pedidoDto);
-			return pedidoDto;
+			pedidoRetornoDto.setIdentificador(cliente.getCliente());
+			pedidoRetornoDto.setNombreCliente(cliente.getNombre() + " " + cliente.getApellidoPaterno() + " " + cliente.getApellidoMaterno());
+			pedidoRetornoDto.setNumeroCliente(cliente.getCliente());
+			pedidoRetornoDto.setItemsPedido(pedido.getItems());
+			pedidoRetornoDto.setDomicilio(pedido.getDomicilio());
+			pedidoRetornoDto.setFechaPedido(pedido.getFechaPedido());
+			pedidoRetornoDto.setEstado(pedido.getEstado());
+			
+			System.out.println(pedidoRetornoDto);
+			return pedidoRetornoDto;
 		}else {
 			System.out.println("Pedido no existe");
 			return null;
@@ -116,9 +128,11 @@ public class ServicioPedido {
 	
 	public boolean eliminaPedido(Long identificador) {
 		
-		Pedido pedido = repositorioPedido.findByIdentificador(identificador);
+		Optional<Pedido> pedidoOpt = repositorioPedido.findByIdentificador(identificador);
 		
-		if(pedido != null) {
+		if(pedidoOpt.isPresent()) {
+			Pedido pedido = pedidoOpt.get();
+			
 			repositorioPedido.delete(pedido);
 			System.out.println("Pedido: " + identificador + " eliminado");
 			return true;

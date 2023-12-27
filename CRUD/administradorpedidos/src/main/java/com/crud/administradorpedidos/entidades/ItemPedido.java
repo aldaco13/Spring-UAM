@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
 @Data
@@ -16,4 +18,8 @@ public class ItemPedido {
 	private String nombre;
 	private String descripcion;
 	private Long precio;
+	
+	@ManyToOne
+	@JoinColumn(name = "idPedido")
+	private Pedido pedido;
 }

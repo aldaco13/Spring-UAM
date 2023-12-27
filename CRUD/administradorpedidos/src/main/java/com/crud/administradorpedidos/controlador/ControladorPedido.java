@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.crud.administradorpedidos.dto.PedidoDTO;
+import com.crud.administradorpedidos.dto.PedidoRetornoDTO;
 import com.crud.administradorpedidos.modelo.servicio.ServicioPedido;
 
 @RestController
@@ -36,9 +37,9 @@ public class ControladorPedido {
 	}
 	
 	@GetMapping("/pedido")
-	public PedidoDTO pedido(@RequestBody Long identificador) {
+	public PedidoRetornoDTO pedido(@RequestBody Long identificador) {
 		
-		PedidoDTO pedido = servicioPedido.consultaPedido(identificador);
+		PedidoRetornoDTO pedido = servicioPedido.consultaPedido(identificador);
 		return pedido;
 	}
 	
