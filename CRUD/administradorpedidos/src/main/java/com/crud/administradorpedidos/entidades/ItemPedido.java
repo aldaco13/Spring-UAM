@@ -1,10 +1,14 @@
 package com.crud.administradorpedidos.entidades;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
@@ -19,7 +23,12 @@ public class ItemPedido {
 	private String descripcion;
 	private Long precio;
 	
+	/*
 	@ManyToOne
 	@JoinColumn(name = "idPedido")
 	private Pedido pedido;
+	*/
+	
+	@ManyToMany(mappedBy = "items")
+    private List<Pedido> pedidos = new ArrayList<>();
 }

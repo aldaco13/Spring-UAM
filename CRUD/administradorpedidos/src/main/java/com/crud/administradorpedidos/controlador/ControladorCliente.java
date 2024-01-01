@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.crud.administradorpedidos.dto.ClienteDTO;
+import com.crud.administradorpedidos.dto.ClienteRetornoDTO;
 import com.crud.administradorpedidos.entidades.Cliente;
 import com.crud.administradorpedidos.modelo.servicio.ServicioCliente;
 
@@ -37,9 +38,9 @@ public class ControladorCliente {
 	}
 	
 	@GetMapping("/consultaClienteNumero")
-	public Cliente consultaClientePorNumero(@RequestBody Long numCliente) {
+	public ClienteRetornoDTO consultaClientePorNumero(@RequestBody Long numCliente) {
 		 
-		Cliente cliente = servicioCliente.consultaClientePorNumero(numCliente);
+		ClienteRetornoDTO cliente = servicioCliente.consultaClientePorNumero(numCliente);
 		
 		return cliente;
 	}

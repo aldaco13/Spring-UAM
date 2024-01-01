@@ -10,6 +10,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
@@ -31,9 +33,20 @@ public class Pedido {
 	private String fechaPedido;
 	private String estado;
 	
+	/*
 	@OneToMany(targetEntity = ItemPedido.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "idPedido")
 	private final List<ItemPedido> items = new ArrayList<>();
+	*/
+	
+	@ManyToMany
+    @JoinTable(
+        name = "pedido_itemPedido",
+        joinColumns = @JoinColumn(name = "pedido_id"),
+        inverseJoinColumns = @JoinColumn(name = "item_pedido_id")
+    )
+	private List<ItemPedido> items = new ArrayList<>();
+	
 	
 	public void agregaItem(List<ItemPedido> item) {
 		items.addAll(item);

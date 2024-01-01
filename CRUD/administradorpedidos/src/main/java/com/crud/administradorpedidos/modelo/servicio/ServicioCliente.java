@@ -1,9 +1,12 @@
 package com.crud.administradorpedidos.modelo.servicio;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.crud.administradorpedidos.dto.ClienteDTO;
+import com.crud.administradorpedidos.dto.ClienteRetornoDTO;
 import com.crud.administradorpedidos.entidades.Cliente;
 import com.crud.administradorpedidos.repositorio.RepositorioCliente;
 
@@ -12,6 +15,9 @@ public class ServicioCliente {
 	
 	@Autowired
 	private RepositorioCliente repositorioCliente;
+	
+	@Autowired
+	private ClienteRetornoDTO clienteRetornoDTO;
 	
 	public boolean existeCliente(String correo) {
 		
@@ -32,26 +38,57 @@ public class ServicioCliente {
 	public boolean registraCliente(Cliente cliente) {
 		
 		if(cliente != null) {
-			repositorioCliente.save(cliente);
-			System.out.println("Se registró el cliente: " + cliente.getCliente());
-			return true;
+			
+			Optional<Cliente> c = repositorioCliente.findByCliente(cliente.getCliente());
+			
+			if(c.isPresent()) {
+				System.out.println("El cliente " + c.get().getCliente() + " ya fue registrado");
+				return false;
+			}else{
+				repositorioCliente.save(cliente);
+				System.out.println("Se registró el cliente: " + cliente.getCliente());
+				return true;
+			}
+			
 		} else  {
 			return false;
 		}
 	}
 	
-	public Cliente consultaClientePorNumero(Long numCliente) {
+	public ClienteRetornoDTO consultaClientePorNumero(Long numCliente) {
 		
-		Cliente cliente = repositorioCliente.findByCliente(numCliente);
-		System.out.println(cliente);
-		return cliente;
+		Optional<Cliente> c = repositorioCliente.findByCliente(numCliente);
+		
+		if(c.isPresent()){
+			clienteRetornoDTO.setCliente(c.get().getCliente());
+			clienteRetornoDTO.setNombre(c.get().getNombre());
+			clienteRetornoDTO.setApellidoPaterno(c.get().getApellidoPaterno());
+			clienteRetornoDTO.setApellidoMaterno(c.get().getApellidoMaterno());
+			clienteRetornoDTO.setCorreo(c.get().getCorreo());
+			clienteRetornoDTO.setCalle(c.get().getCalle());
+			clienteRetornoDTO.setNumero(c.get().getNumero());
+			clienteRetornoDTO.setColonia(c.get().getColonia());
+			clienteRetornoDTO.setDelegacion(c.get().getDelegacion());
+			clienteRetornoDTO.setCp(c.get().getCp());
+			clienteRetornoDTO.setCiudad(c.get().getCiudad());
+			clienteRetornoDTO.setIdPedidos(c.get().getPedidos());
+			
+			System.out.println(clienteRetornoDTO.toString());
+			
+			return clienteRetornoDTO;
+		}else {
+			System.out.println("El cliente " + numCliente + " no existe");
+			return null;
+		}
 	}
 
 	public boolean actualizaCliente(ClienteDTO clienteDTO) {
 		
-		Cliente cliente = repositorioCliente.findByCliente(clienteDTO.getCliente());
+		Optional<Cliente> c = repositorioCliente.findByCliente(clienteDTO.getCliente());
 		
-		if(cliente != null) {
+		if(c.isPresent()) {
+			
+			Cliente cliente = c.get();
 			
 			if(clienteDTO.getNombre() != null) {
 				cliente.setNombre(clienteDTO.getNombre());
@@ -104,9 +141,11 @@ public class ServicioCliente {
 
 	public boolean eliminaCliente(Long numCliente) {
 		
-		Cliente cliente = repositorioCliente.findByCliente(numCliente);
+		Optional<Cliente> c = repositorioCliente.findByCliente(numCliente);
 		
-		if(cliente != null) {
+		if(c.isPresent()) {
+			
+			Cliente cliente = c.get();
 			repositorioCliente.delete(cliente);
 			System.out.println("Cliente: " + numCliente + " eliminado");
 			return true;

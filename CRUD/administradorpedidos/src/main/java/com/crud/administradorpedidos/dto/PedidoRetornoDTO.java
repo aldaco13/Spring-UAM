@@ -18,13 +18,15 @@ public class PedidoRetornoDTO {
 	private String domicilio;
 	private String fechaPedido;
 	private String estado;
-	private List<ItemRetornoDTO> itemsPedido = new ArrayList<ItemRetornoDTO>();
+	private List<ItemRetornoDTO> itemsPedido;
 	
 	public void setItemsPedido(List<ItemPedido>items) {
 		
+		 itemsPedido = new ArrayList<ItemRetornoDTO>();
+		
 		for (ItemPedido itemPedido : items) {
 			ItemRetornoDTO itemRetorno = new ItemRetornoDTO();
-			itemRetorno.setIdentificadorPedido(itemPedido.getId());
+			itemRetorno.setIdItem(itemPedido.getId());
 			itemRetorno.setNombre(itemPedido.getNombre());
 			itemRetorno.setDescripcion(itemPedido.getDescripcion());
 			itemRetorno.setPrecio(itemPedido.getPrecio());

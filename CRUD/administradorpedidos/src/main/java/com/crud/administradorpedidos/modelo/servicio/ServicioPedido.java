@@ -35,31 +35,42 @@ public class ServicioPedido {
 		
 		if(pedidoDto != null) {
 			
-			Optional<Pedido> pedidoOpt = repositorioPedido.findByIdentificador(pedidoDto.getIdentificador());
+			Optional<Pedido> p = repositorioPedido.findByIdentificador(pedidoDto.getIdentificador());
 			Pedido pedido = null;
 			
-			if(pedidoOpt.isPresent()) {
+			if(p.isPresent()) {
 				
-				pedido = pedidoOpt.get();
-				System.out.println(pedido.toString() + " ya existe");
+				pedido = p.get();
+				System.out.println("El pedido: " + pedido.getIdentificador() + " ya existe");
 				return false;
 			} else {
 			
-				Cliente cliente = repositorioCliente.findByCliente(pedidoDto.getNumeroCliente());
-				List<ItemPedido> items = obtenItemsPedido(pedidoDto.getItems());
+				Optional<Cliente> c = repositorioCliente.findByCliente(pedidoDto.getNumeroCliente());
 				
-				pedido = new Pedido();
-				pedido.setIdentificador(pedidoDto.getIdentificador());
-				pedido.setCliente(cliente);
-				pedido.agregaItem(items);
-				pedido.setDomicilio(pedidoDto.getDomicilio());
-				pedido.setFechaPedido(pedidoDto.getFechaPedido());
-				pedido.setEstado(pedidoDto.getEstado());
+				if(c.isPresent()) {
+					
+					Cliente cliente = c.get();
+					
+					List<ItemPedido> items = obtenItemsPedido(pedidoDto.getItems());
+					
+					pedido = new Pedido();
+					pedido.setIdentificador(pedidoDto.getIdentificador());
+					pedido.setCliente(cliente);
+					pedido.agregaItem(items);
+					pedido.setDomicilio(pedidoDto.getDomicilio());
+					pedido.setFechaPedido(pedidoDto.getFechaPedido());
+					pedido.setEstado(pedidoDto.getEstado());
+					
 				
-			
-				repositorioPedido.save(pedido);
-				System.out.println(pedido.toString() + " creado");
-				return true;
+					repositorioPedido.save(pedido);
+					System.out.println("Pedido " + pedido.getIdentificador() + " creado");
+					return true;
+				}else{
+					System.out.println("No existe ningún cliente asociado a este pedido");
+					return false;
+				}
+				
+				
 			}
 		}else {
 			return false;
@@ -103,23 +114,30 @@ public class ServicioPedido {
 
 	public PedidoRetornoDTO consultaPedido(Long identificador) {
 		
-		Optional<Pedido> pedidoOpt = repositorioPedido.findByIdentificador(identificador);
+		Optional<Pedido> p = repositorioPedido.findByIdentificador(identificador);
 		
-		if(pedidoOpt.isPresent()) {
+		if(p.isPresent()) {
 			
-			Pedido pedido = pedidoOpt.get();
-			Cliente cliente = repositorioCliente.findByCliente(pedido.getCliente().getCliente());
+			Pedido pedido = p.get();
+			Optional<Cliente> c = repositorioCliente.findByCliente(pedido.getCliente().getCliente());
 			
-			pedidoRetornoDto.setIdentificador(cliente.getCliente());
-			pedidoRetornoDto.setNombreCliente(cliente.getNombre() + " " + cliente.getApellidoPaterno() + " " + cliente.getApellidoMaterno());
-			pedidoRetornoDto.setNumeroCliente(cliente.getCliente());
-			pedidoRetornoDto.setItemsPedido(pedido.getItems());
-			pedidoRetornoDto.setDomicilio(pedido.getDomicilio());
-			pedidoRetornoDto.setFechaPedido(pedido.getFechaPedido());
-			pedidoRetornoDto.setEstado(pedido.getEstado());
+			if(c.isPresent()) {
+				Cliente cliente = c.get();
+				
+				pedidoRetornoDto.setIdentificador(pedido.getIdentificador());
+				pedidoRetornoDto.setNombreCliente(cliente.getNombre() + " " + cliente.getApellidoPaterno() + " " + cliente.getApellidoMaterno());
+				pedidoRetornoDto.setNumeroCliente(cliente.getCliente());
+				pedidoRetornoDto.setItemsPedido(pedido.getItems());
+				pedidoRetornoDto.setDomicilio(pedido.getDomicilio());
+				pedidoRetornoDto.setFechaPedido(pedido.getFechaPedido());
+				pedidoRetornoDto.setEstado(pedido.getEstado());
+				
+				System.out.println(pedidoRetornoDto.toString());
+				return pedidoRetornoDto;
+			}else {
+				return null;
+			}
 			
-			System.out.println(pedidoRetornoDto);
-			return pedidoRetornoDto;
 		}else {
 			System.out.println("Pedido no existe");
 			return null;

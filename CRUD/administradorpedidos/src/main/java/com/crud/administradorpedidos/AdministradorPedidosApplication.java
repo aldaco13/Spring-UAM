@@ -38,7 +38,7 @@ public class AdministradorPedidosApplication {
 		
 		item = new ItemPedido();
 		item.setCodigo(2L);
-		item.setNombre("Hamburgues");
+		item.setNombre("Hamburguesa");
 		item.setDescripcion("Hamburguesa Hawaiana");
 		item.setPrecio(100L);
 		
