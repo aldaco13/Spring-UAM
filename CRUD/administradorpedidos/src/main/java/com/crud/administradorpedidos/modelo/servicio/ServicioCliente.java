@@ -73,7 +73,12 @@ public class ServicioCliente {
 			clienteRetornoDTO.setCiudad(c.get().getCiudad());
 			clienteRetornoDTO.setIdPedidos(c.get().getPedidos());
 			
-			System.out.println(clienteRetornoDTO.toString());
+			System.out.println("Número de cliente: " + clienteRetornoDTO.getCliente());
+			System.out.println("Nombre: " + clienteRetornoDTO.getNombre());
+			System.out.println("Apellidos: " + clienteRetornoDTO.getApellidoPaterno() + " " + clienteRetornoDTO.getApellidoMaterno());
+			System.out.println("Correo: " + clienteRetornoDTO.getCorreo());
+			System.out.println("Domicilio:" + clienteRetornoDTO.getCalle() + ", " + clienteRetornoDTO.getNumero() + ", " + clienteRetornoDTO.getColonia() + ", " + clienteRetornoDTO.getDelegacion() + ", " + clienteRetornoDTO.getCp() + ", " + clienteRetornoDTO.getCiudad());
+			System.out.println("Pedidos: " + clienteRetornoDTO.getIdPedidos());
 			
 			return clienteRetornoDTO;
 		}else {

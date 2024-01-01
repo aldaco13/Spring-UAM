@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.crud.administradorpedidos.dto.ItemRetornoDTO;
 import com.crud.administradorpedidos.dto.PedidoDTO;
 import com.crud.administradorpedidos.dto.PedidoRetornoDTO;
 import com.crud.administradorpedidos.entidades.Cliente;
@@ -66,7 +67,7 @@ public class ServicioPedido {
 					System.out.println("Pedido " + pedido.getIdentificador() + " creado");
 					return true;
 				}else{
-					System.out.println("No existe ningún cliente asociado a este pedido");
+					System.out.println("No existe el cliente " + pedidoDto.getNumeroCliente() + ", no es posible generar el pedido");
 					return false;
 				}
 				
@@ -132,7 +133,19 @@ public class ServicioPedido {
 				pedidoRetornoDto.setFechaPedido(pedido.getFechaPedido());
 				pedidoRetornoDto.setEstado(pedido.getEstado());
 				
-				System.out.println(pedidoRetornoDto.toString());
+				System.out.println("Datos del cliente:");
+				System.out.println("Número cliente:" + pedidoRetornoDto.getIdentificador());
+				System.out.println("Nombre: " + pedidoRetornoDto.getNombreCliente());
+				System.out.println("");
+				
+				
+				/*private Long identificador;
+				private String nombreCliente;
+				private Long numeroCliente;
+				private String domicilio;
+				private String fechaPedido;
+				private String estado;
+				private List<ItemRetornoDTO> itemsPedido;*/
 				return pedidoRetornoDto;
 			}else {
 				return null;
