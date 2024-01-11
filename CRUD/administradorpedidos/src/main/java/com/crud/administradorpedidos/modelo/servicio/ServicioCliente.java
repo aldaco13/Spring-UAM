@@ -22,9 +22,9 @@ public class ServicioCliente {
 	public boolean existeCliente(String correo) {
 		
 		if(correo != null && !correo.equals("")) {
-			Cliente clienteAux = repositorioCliente.findByCorreo(correo);
+			Optional<Cliente> c = repositorioCliente.findByCorreo(correo);
 			
-			if(clienteAux != null) {
+			if(c.isPresent()) {
 				System.out.println("El correo: " + correo +" ya fue registrado");
 				return true;
 			} else {

@@ -8,10 +8,10 @@ import com.crud.administradorpedidos.entidades.Cliente;
 
 public interface RepositorioCliente extends JpaRepository<Cliente, Integer> {
 	
-	public Cliente findById(Long id);
+	public Optional<Cliente> findById(Long id);
 	
 	public Optional<Cliente> findByCliente(Long cliente);
 	
-	public Cliente findByCorreo(String correo);
+	public Optional<Cliente> findByCorreo(String correo);
 	
 }

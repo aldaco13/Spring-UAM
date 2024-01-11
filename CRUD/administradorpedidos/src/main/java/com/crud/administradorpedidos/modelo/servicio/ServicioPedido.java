@@ -31,6 +31,10 @@ public class ServicioPedido {
 	
 	@Autowired
 	private PedidoRetornoDTO pedidoRetornoDto;
+
+	@Autowired
+	private ServicioPedidoItemPedido servicioPedidoItemPedido;
+	
 	
 	public boolean pedidoRecibido(PedidoDTO pedidoDto) {
 		
@@ -82,11 +86,11 @@ public class ServicioPedido {
 		
 		if(pedidoDto != null) {
 			
-			Optional<Pedido> pedidoOpt  = repositorioPedido.findByIdentificador(pedidoDto.getIdentificador());
+			Optional<Pedido> p  = repositorioPedido.findByIdentificador(pedidoDto.getIdentificador());
 			
-			if(pedidoOpt.isPresent()) {
+			if(p.isPresent()) {
 				
-				Pedido pedido = pedidoOpt.get();
+				Pedido pedido = p.get();
 				
 				if(pedidoDto.getItems() != null) {
 					List<ItemPedido> items = obtenItemsPedido(pedidoDto.getItems());
@@ -133,19 +137,17 @@ public class ServicioPedido {
 				pedidoRetornoDto.setFechaPedido(pedido.getFechaPedido());
 				pedidoRetornoDto.setEstado(pedido.getEstado());
 				
-				System.out.println("Datos del cliente:");
-				System.out.println("Número cliente:" + pedidoRetornoDto.getIdentificador());
-				System.out.println("Nombre: " + pedidoRetornoDto.getNombreCliente());
-				System.out.println("");
+				System.out.println("Datos del pedido:");
+				System.out.println("Número de pedido: " + pedidoRetornoDto.getIdentificador());
+				System.out.println("Nombre de Cliente: " + pedidoRetornoDto.getNombreCliente());
+				System.out.println("Número de Cliente: " + pedidoRetornoDto.getNumeroCliente());
+				System.out.println("Items:");
+				for(ItemRetornoDTO ipr : pedidoRetornoDto.getItemsPedido()) {
+					System.out.println(ipr.getNombre() + " $" + ipr.getPrecio());
+				}
+				System.out.println("Domicilio entrega: " + pedidoRetornoDto.getDomicilio());
+				System.out.println("Estado: " + pedidoRetornoDto.getEstado());
 				
-				
-				/*private Long identificador;
-				private String nombreCliente;
-				private Long numeroCliente;
-				private String domicilio;
-				private String fechaPedido;
-				private String estado;
-				private List<ItemRetornoDTO> itemsPedido;*/
 				return pedidoRetornoDto;
 			}else {
 				return null;
@@ -159,10 +161,16 @@ public class ServicioPedido {
 	
 	public boolean eliminaPedido(Long identificador) {
 		
-		Optional<Pedido> pedidoOpt = repositorioPedido.findByIdentificador(identificador);
+		Optional<Pedido> p = repositorioPedido.findByIdentificador(identificador);
+		boolean eliminado = false;
 		
-		if(pedidoOpt.isPresent()) {
-			Pedido pedido = pedidoOpt.get();
+		if(p.isPresent()) {
+			Pedido pedido = p.get();
+			
+			for(ItemPedido ip : pedido.getItems()) {
+				eliminado = servicioItem.eliminaItem(ip.getId());
+			}
+			
 			
 			repositorioPedido.delete(pedido);
 			System.out.println("Pedido: " + identificador + " eliminado");
