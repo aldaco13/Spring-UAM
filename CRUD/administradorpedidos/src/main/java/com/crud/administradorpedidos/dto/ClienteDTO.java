@@ -1,12 +1,10 @@
 package com.crud.administradorpedidos.dto;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@Data
 public class ClienteDTO {
 	
 	private Long cliente;

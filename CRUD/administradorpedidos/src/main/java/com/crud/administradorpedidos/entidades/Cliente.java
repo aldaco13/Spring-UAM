@@ -3,7 +3,6 @@ package com.crud.administradorpedidos.entidades;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -31,7 +30,7 @@ public class Cliente {
 	private String cp;
 	private String ciudad;
 	
-	@OneToMany(targetEntity = Pedido.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(targetEntity = Pedido.class, fetch = FetchType.EAGER, orphanRemoval = true)
 	@JoinColumn(name = "idPedidoCliente")
 	private final List<Pedido> pedidos = new ArrayList<>();
 	

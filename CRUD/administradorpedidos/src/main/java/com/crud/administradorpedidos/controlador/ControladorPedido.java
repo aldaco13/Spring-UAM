@@ -21,19 +21,9 @@ public class ControladorPedido {
 	@PostMapping("/enviaPedido")
 	public boolean pedidoRecibido(@RequestBody PedidoDTO pedidoDto) {
 		
-		//System.out.println(pedidoDto);
-		
 		boolean recibido = servicioPedido.pedidoRecibido(pedidoDto);
 		
 		return recibido;
-	}
-	
-	@PostMapping("/modificaPedido")
-	public boolean modificaPedido(@RequestBody PedidoDTO pedidoDto) {
-		
-		boolean modificado = servicioPedido.modificaPedido(pedidoDto);
-		
-		return modificado;
 	}
 	
 	@GetMapping("/pedido")
@@ -42,6 +32,15 @@ public class ControladorPedido {
 		PedidoRetornoDTO pedido = servicioPedido.consultaPedido(identificador);
 		return pedido;
 	}
+	
+	@PostMapping("/modificaPedido")
+	public boolean modificaPedidoCliente(@RequestBody PedidoDTO pedidoDto) {
+		
+		boolean modificado = servicioPedido.modificaPedidoCliente(pedidoDto);
+		
+		return modificado;
+	}
+	
 	
 	@PostMapping("/eliminaPedido")
 	public boolean eliminaPedido(@RequestBody Long identificador) {

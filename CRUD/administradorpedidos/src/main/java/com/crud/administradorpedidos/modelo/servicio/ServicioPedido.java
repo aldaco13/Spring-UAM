@@ -31,9 +31,6 @@ public class ServicioPedido {
 	
 	@Autowired
 	private PedidoRetornoDTO pedidoRetornoDto;
-
-	@Autowired
-	private ServicioPedidoItemPedido servicioPedidoItemPedido;
 	
 	
 	public boolean pedidoRecibido(PedidoDTO pedidoDto) {
@@ -82,7 +79,7 @@ public class ServicioPedido {
 		}
 	}
 	
-	public boolean modificaPedido(PedidoDTO pedidoDto) {
+	public boolean modificaPedidoCliente(PedidoDTO pedidoDto) {
 		
 		if(pedidoDto != null) {
 			
@@ -93,7 +90,9 @@ public class ServicioPedido {
 				Pedido pedido = p.get();
 				
 				if(pedidoDto.getItems() != null) {
-					List<ItemPedido> items = obtenItemsPedido(pedidoDto.getItems());
+					List<ItemPedido> items = new ArrayList<ItemPedido>();
+					pedido.setItems(items);
+					items = obtenItemsPedido(pedidoDto.getItems());
 					pedido.agregaItem(items);
 				}
 
@@ -104,7 +103,7 @@ public class ServicioPedido {
 				repositorioPedido.save(pedido);
 				
 				System.out.println("Pedido modificado con exito");
-				System.out.println(pedido.toString());
+				//System.out.println(pedido.toString());
 				
 				return true;
 			}else {
@@ -167,14 +166,28 @@ public class ServicioPedido {
 		if(p.isPresent()) {
 			Pedido pedido = p.get();
 			
-			for(ItemPedido ip : pedido.getItems()) {
-				eliminado = servicioItem.eliminaItem(ip.getId());
+			Optional<Cliente> c = repositorioCliente.findByCliente(pedido.getCliente().getCliente());
+			
+			if(c.isPresent()) {
+				Cliente cliente = c.get();
+				if(cliente.getPedidos().contains(pedido)) {
+					cliente.getPedidos().remove(pedido);
+				}
+				
 			}
 			
 			
 			repositorioPedido.delete(pedido);
-			System.out.println("Pedido: " + identificador + " eliminado");
-			return true;
+			
+			p = null;
+			p = repositorioPedido.findByIdentificador(identificador);
+			if(p.isPresent()){
+				System.out.println("No se eliminó");
+			}else{
+				eliminado = true;
+				System.out.println("Pedido: " + identificador + " eliminado");
+			}
+			return eliminado;
 		}else {
 			System.out.println("El pedido no existe");
 			return false;
