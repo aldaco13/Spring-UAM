@@ -176,7 +176,6 @@ public class ServicioPedido {
 				
 			}
 			
-			
 			repositorioPedido.delete(pedido);
 			
 			p = null;
