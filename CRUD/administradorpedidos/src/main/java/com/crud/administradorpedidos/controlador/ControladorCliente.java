@@ -1,6 +1,9 @@
 package com.crud.administradorpedidos.controlador;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,7 +15,9 @@ import com.crud.administradorpedidos.dto.ClienteRetornoDTO;
 import com.crud.administradorpedidos.entidades.Cliente;
 import com.crud.administradorpedidos.modelo.servicio.ServicioCliente;
 
+
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/cliente")
 public class ControladorCliente {
 	
@@ -29,12 +34,19 @@ public class ControladorCliente {
 		}
 	}
 	
+	
 	@PostMapping("/registraCliente")
-	public boolean registraCliente(@RequestBody Cliente cliente) {
+	public ResponseEntity<String> registraCliente(@RequestBody Cliente cliente) {
 		
-		boolean registrado = servicioCliente.registraCliente(cliente);
+		Boolean registrado = servicioCliente.registraCliente(cliente);
 		
-		return registrado;
+		if(registrado == null){
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Error en datos enviados");
+		}else if(registrado) {
+			return ResponseEntity.ok("ok");
+		}else{
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El usuario ya existe");
+		}
 	}
 	
 	@GetMapping("/consultaClienteNumero")
