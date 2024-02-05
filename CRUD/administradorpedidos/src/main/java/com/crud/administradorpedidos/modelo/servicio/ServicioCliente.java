@@ -1,5 +1,7 @@
 package com.crud.administradorpedidos.modelo.servicio;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +21,15 @@ public class ServicioCliente {
 	@Autowired
 	private ClienteRetornoDTO clienteRetornoDTO;
 	
+	private final Long PREFIJO_CLIENTE = 1000L;
+	
 	public boolean existeCliente(String correo) {
 		
 		if(correo != null && !correo.equals("")) {
 			Optional<Cliente> c = repositorioCliente.findByCorreo(correo);
 			
 			if(c.isPresent()) {
-				System.out.println("El correo: " + correo +" ya fue registrado");
+				System.out.println("Ya existe un cliente con el correo " + correo);
 				return true;
 			} else {
 				return false;
@@ -35,23 +39,24 @@ public class ServicioCliente {
 		}
 	}
 
-	public boolean registraCliente(Cliente cliente) {
+	public Boolean registraCliente(Cliente cliente) {
 		
 		if(cliente != null) {
 			
-			Optional<Cliente> c = repositorioCliente.findByCliente(cliente.getCliente());
+			boolean existe = existeCliente(cliente.getCorreo());
 			
-			if(c.isPresent()) {
-				System.out.println("El cliente " + c.get().getCliente() + " ya fue registrado");
+			if(existe) {
 				return false;
 			}else{
+				Long numCliente = generaNumCliente();
+				cliente.setCliente(numCliente);
 				repositorioCliente.save(cliente);
 				System.out.println("Se registró el cliente: " + cliente.getCliente());
 				return true;
 			}
 			
 		} else  {
-			return false;
+			return null;
 		}
 	}
 	
@@ -158,6 +163,33 @@ public class ServicioCliente {
 			System.out.println("Error");
 			return false;
 		}
+	}
+	
+	public Long generaNumCliente(){
+		String numCliente = "";
+		Long numClienteL = null;
+		Long id = repositorioCliente.encontrarUltimoId();
+		
+		if(id == null) {
+			id = 1L;
+		}
+		
+		Date fecha = new Date();
+		
+		LocalDate localDate = fecha.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+
+        //int dia = localDate.getDayOfMonth();
+        //int mes = localDate.getMonthValue();
+        int anio = localDate.getYear();
+        
+        id = id + PREFIJO_CLIENTE;
+        
+        numCliente = id + "" + anio;
+        numClienteL =  Long.parseLong(numCliente);
+        /*SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        String fechaString = formato.format(fecha);*/
+		
+		return numClienteL;
 	}
 
 }
