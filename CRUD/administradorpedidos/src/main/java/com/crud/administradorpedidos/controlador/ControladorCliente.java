@@ -17,7 +17,7 @@ import com.crud.administradorpedidos.modelo.servicio.ServicioCliente;
 
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:8080")
 @RequestMapping("/cliente")
 public class ControladorCliente {
 	
