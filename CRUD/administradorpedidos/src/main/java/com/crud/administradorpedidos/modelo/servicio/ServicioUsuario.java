@@ -3,11 +3,14 @@ package com.crud.administradorpedidos.modelo.servicio;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.crud.administradorpedidos.dto.UsuarioDTO;
 import com.crud.administradorpedidos.dto.UsuarioRetornoDTO;
+import com.crud.administradorpedidos.entidades.Rol;
 import com.crud.administradorpedidos.entidades.Usuario;
+import com.crud.administradorpedidos.repositorio.RepositorioRol;
 import com.crud.administradorpedidos.repositorio.RepositorioUsuario;
 
 @Service
@@ -19,16 +22,34 @@ public class ServicioUsuario {
 	
 	@Autowired
 	private UsuarioRetornoDTO usuarioRetornoDTO;
+	
+	@Autowired
+	private RepositorioRol repositorioRol;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 
-	public boolean existeUsuario(String correo) {
-		if(correo != null && !correo.equals("")) {
-			Optional<Usuario> u = repositorioUsuario.findByCorreo(correo);
+	public boolean existeUsuario(String dato) {
+		if(dato != null && !dato.equals("")) {
 			
-			if(u.isPresent()) {
-				System.out.println("Ya existe un cliente con el correo " + correo);
-				return true;
-			} else {
-				return false;
+			if(dato.contains("@")) {
+				Optional<Usuario> u = repositorioUsuario.findByCorreo(dato);
+				
+				if(u.isPresent()) {
+					System.out.println("Ya existe un cliente con el correo " + dato);
+					return true;
+				} else {
+					return false;
+				}
+			}else {
+				Optional<Usuario> u = repositorioUsuario.findByUsuario(dato);
+				
+				if(u.isPresent()) {
+					return true;
+				} else {
+					return false;
+				}
 			}
 		}else {
 			return false;
@@ -43,11 +64,28 @@ public class ServicioUsuario {
 			if(existe) {
 				return false;
 			}else{
-				String nombreUsuario = "";// generaUsuario();
-				usuario.setUsuario(nombreUsuario);
-				repositorioUsuario.save(usuario);
-				System.out.println("Se registró el usuario: " + usuario.getUsuario());
-				return true;
+				Optional<Rol> r = repositorioRol.findByNombre(usuario.getNombreRol());
+				
+				if(r.isPresent()) {
+					
+					Rol rol = r.get();
+					String nombreUsuario = generaUsuario(usuario.getApellidoPaterno(), usuario.getNombre() ,usuario.getApellidoMaterno());
+					
+					if(existeUsuario(nombreUsuario)) {
+						nombreUsuario = generaUsuario(usuario.getNombre(), usuario.getApellidoPaterno() ,usuario.getApellidoMaterno());
+					}
+					
+					usuario.setUsuario(nombreUsuario);
+					usuario.setRol(rol);
+					usuario.setContrasenia(passwordEncoder.encode(usuario.getContrasenia()));
+					
+					repositorioUsuario.save(usuario);
+					
+					System.out.println("Se registró el usuario: " + usuario.getUsuario());
+					return true;
+				}else {
+					return false;
+				}
 			}
 			
 		} else  {
@@ -61,10 +99,12 @@ public class ServicioUsuario {
 		if(u.isPresent()){
 			
 			usuarioRetornoDTO.setUsuario(u.get().getUsuario());
+			usuarioRetornoDTO.setContrasenia(u.get().getContrasenia());
 			usuarioRetornoDTO.setNombre(u.get().getNombre());
 			usuarioRetornoDTO.setAPaterno(u.get().getApellidoPaterno());
 			usuarioRetornoDTO.setAMaterno(u.get().getApellidoMaterno());
 			usuarioRetornoDTO.setPuesto(u.get().getPuesto());
+			usuarioRetornoDTO.setRol(u.get().getRol().getNombre());
 			
 			System.out.println("Usuario: " + usuarioRetornoDTO.getUsuario());
 			System.out.println("Nombre: " + usuarioRetornoDTO.getNombre());
@@ -79,7 +119,7 @@ public class ServicioUsuario {
 	}
 
 	public boolean actualizaUsuario(UsuarioDTO usuarioDTO) {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 
@@ -96,6 +136,14 @@ public class ServicioUsuario {
 			System.out.println("Error");
 			return false;
 		}
+	}
+	
+	private String generaUsuario(String apellidoPaterno, String nombre, String apellidoMaterno) {
+		String nombreUsuario = "";
+		
+		nombreUsuario = apellidoPaterno.substring(0, 1) + nombre + apellidoMaterno.substring(0, 1);
+		
+		return nombreUsuario.toLowerCase();
 	}
 
 }

@@ -71,19 +71,19 @@ public class AdministradorPedidosApplication {
 		
 		Rol rol = new Rol();
 		rol.setRol(1);
-		rol.setDescripcion("Administrador");
+		rol.setNombre("Administrador");
 		
 		repositorioRol.save(rol);
 		
 		rol = new Rol();
 		rol.setRol(2);
-		rol.setDescripcion("Usuario");
+		rol.setNombre("Usuario");
 		
 		repositorioRol.save(rol);
 		
 		rol = new Rol();
 		rol.setRol(3);
-		rol.setDescripcion("Cliente");
+		rol.setNombre("Cliente");
 		
 		repositorioRol.save(rol);
 		
@@ -105,7 +105,7 @@ public class AdministradorPedidosApplication {
 		
 		Usuario usuario = new Usuario();
 		
-		usuario.setUsuario("oaldacom");
+		/*usuario.setUsuario("oaldacom");
 		usuario.setContrasenia("{noop}pass");
 		usuario.setEstatus(1);
 		usuario.setRol(admin);
@@ -115,7 +115,7 @@ public class AdministradorPedidosApplication {
 		usuario.setCorreo("omar.aldaco.m@gmail.com");
 		usuario.setTelefono("5564871618");
 		
-		repositorioUsuario.save(usuario);
+		repositorioUsuario.save(usuario);*/
 		
 		usuario = new Usuario();
 		

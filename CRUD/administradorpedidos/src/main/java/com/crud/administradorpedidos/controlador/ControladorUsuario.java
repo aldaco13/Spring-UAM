@@ -10,11 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.crud.administradorpedidos.dto.ClienteDTO;
-import com.crud.administradorpedidos.dto.ClienteRetornoDTO;
 import com.crud.administradorpedidos.dto.UsuarioDTO;
 import com.crud.administradorpedidos.dto.UsuarioRetornoDTO;
-import com.crud.administradorpedidos.entidades.Cliente;
 import com.crud.administradorpedidos.entidades.Usuario;
 import com.crud.administradorpedidos.modelo.servicio.ServicioUsuario;
 
@@ -37,8 +34,17 @@ public class ControladorUsuario {
 	}
 	
 	
+	@PostMapping
+	private ResponseEntity<?> creaUsuario(@RequestBody Usuario usuario){
+		return ResponseEntity.status(HttpStatus.CREATED).body(servicioUsuario.registraUsuario(usuario));
+	}
+	
 	@PostMapping("/registraUsuario")
-	public ResponseEntity<String> registraUsuario(@RequestBody Usuario usuario) {
+	public ResponseEntity<?> registraUsuario(@RequestBody Usuario usuario){
+		usuario.setNombreRol("Usuario");
+		return creaUsuario(usuario);
+	}
+	/*public ResponseEntity<String> registraUsuario(@RequestBody Usuario usuario) {
 		
 		Boolean registrado = servicioUsuario.registraUsuario(usuario);
 		
@@ -49,9 +55,11 @@ public class ControladorUsuario {
 		}else{
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El usuario ya existe");
 		}
-	}
+	}*/
 	
-	@GetMapping("/consultaUsuarioNumero")
+	
+	
+	@GetMapping("/consultaUsuarioNombre")
 	public UsuarioRetornoDTO consultaUsuarioPorNumero(@RequestBody String nombreUsuario) {
 		 
 		UsuarioRetornoDTO usuario = servicioUsuario.consultaUsuarioPorNumero(nombreUsuario);

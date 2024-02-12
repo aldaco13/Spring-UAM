@@ -1,5 +1,7 @@
 package com.crud.administradorpedidos.entidades;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,6 +17,7 @@ public class Usuario {
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Long id;
+	//@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String usuario;
 	private String contrasenia;
 	private int estatus;
@@ -24,6 +27,7 @@ public class Usuario {
 	private String correo;
 	private String telefono;
 	private String puesto;
+	private String nombreRol;
 	
 	@ManyToOne
 	@JoinColumn(name = "idRol")

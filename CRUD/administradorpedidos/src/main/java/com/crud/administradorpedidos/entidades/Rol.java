@@ -19,7 +19,7 @@ public class Rol {
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Long id;
 	private int rol;
-	private String descripcion;
+	private String nombre;
 	
 	@OneToMany(targetEntity = Usuario.class, fetch = FetchType.EAGER, orphanRemoval = true)
 	@JoinColumn(name = "idRol")
