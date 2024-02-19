@@ -105,7 +105,7 @@ public class AdministradorPedidosApplication {
 		
 		Usuario usuario = new Usuario();
 		
-		/*usuario.setUsuario("oaldacom");
+		usuario.setUsuario("oaldacom");
 		usuario.setContrasenia("{noop}pass");
 		usuario.setEstatus(1);
 		usuario.setRol(admin);
@@ -115,7 +115,7 @@ public class AdministradorPedidosApplication {
 		usuario.setCorreo("omar.aldaco.m@gmail.com");
 		usuario.setTelefono("5564871618");
 		
-		repositorioUsuario.save(usuario);*/
+		repositorioUsuario.save(usuario);
 		
 		usuario = new Usuario();
 		

@@ -2,12 +2,19 @@ package com.crud.administradorpedidos.security;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+
+import com.crud.administradorpedidos.security.filtro.JwtFiltroAutenticacion;
+import com.crud.administradorpedidos.security.filtro.JwtFiltroValidacion;
+
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,25 +29,19 @@ public class BDSeguridadWeb {
 	private final DataSource dataSource;
 	private final JdbcTemplate jdbcTemplate;
 
+	@Autowired
+	private AuthenticationConfiguration authenticationConfiguration;
+	
+	
 	public BDSeguridadWeb(DataSource dataSource, JdbcTemplate jdbcTemplate) {
 	    this.dataSource = dataSource;
 	    this.jdbcTemplate = jdbcTemplate;
 	}
 	
-	
 	@Bean
-	UserDetailsManager usuarios(DataSource dataSource) {
-		JdbcUserDetailsManager usuarios = new JdbcUserDetailsManager();
-		usuarios.setDataSource(dataSource);
-		usuarios.setJdbcTemplate(jdbcTemplate);
-		usuarios.setUsersByUsernameQuery("SELECT U.usuario, U.contrasenia, U.estatus FROM Usuario U WHERE usuario=?");
-		usuarios.setAuthoritiesByUsernameQuery("SELECT U.usuario, R.descripcion FROM usuario U JOIN Rol R ON U.id_rol = R.id WHERE U.usuario=?");
-		
-		//usuarios.setAuthoritiesByUsernameQuery("SELECT R.descripcion FROM usuario U JOIN Rol R where rol = U.id_rol");
-		
-		return usuarios;
+	AuthenticationManager authenticationManager() throws Exception {
+		return authenticationConfiguration.getAuthenticationManager();
 	}
-	
 	
 	@Bean
 	public SecurityFilterChain filtroVistas(HttpSecurity http) throws Exception {
@@ -49,6 +50,8 @@ public class BDSeguridadWeb {
 				.requestMatchers(HttpMethod.GET, "/usuario/**").permitAll()
 				.requestMatchers(HttpMethod.POST, "/usuario/registraUsuario").permitAll()
 				.anyRequest().authenticated())
+				.addFilter(new JwtFiltroAutenticacion(authenticationManager()))
+				.addFilter(new JwtFiltroValidacion(authenticationManager()))
 				.csrf(config -> config.disable())
 				.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.build();
@@ -71,6 +74,19 @@ public class BDSeguridadWeb {
 	 }
 	 
 	 
+	 
+	 /*@Bean
+		UserDetailsManager usuarios(DataSource dataSource) {
+			JdbcUserDetailsManager usuarios = new JdbcUserDetailsManager();
+			usuarios.setDataSource(dataSource);
+			usuarios.setJdbcTemplate(jdbcTemplate);
+			usuarios.setUsersByUsernameQuery("SELECT U.usuario, U.contrasenia, U.estatus FROM Usuario U WHERE usuario=?");
+			usuarios.setAuthoritiesByUsernameQuery("SELECT U.usuario, R.descripcion FROM usuario U JOIN Rol R ON U.id_rol = R.id WHERE U.usuario=?");
+			
+			//usuarios.setAuthoritiesByUsernameQuery("SELECT R.descripcion FROM usuario U JOIN Rol R where rol = U.id_rol");
+			
+			return usuarios;
+		}*/
 	/*@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 	    http
