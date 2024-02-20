@@ -75,19 +75,19 @@ public class AdministradorPedidosApplication {
 		
 		Rol rol = new Rol();
 		rol.setRol(1);
-		rol.setNombre("ADMIN");
+		rol.setNombre("ROLE_ADMIN");
 		
 		repositorioRol.save(rol);
 		
 		rol = new Rol();
 		rol.setRol(2);
-		rol.setNombre("USUARIO");
+		rol.setNombre("ROLE_USUARIO");
 		
 		repositorioRol.save(rol);
 		
 		rol = new Rol();
 		rol.setRol(3);
-		rol.setNombre("CLIENTE");
+		rol.setNombre("ROLE_CLIENTE");
 		
 		repositorioRol.save(rol);
 		

@@ -26,17 +26,17 @@ import org.springframework.security.provisioning.UserDetailsManager;
 @EnableWebSecurity
 public class BDSeguridadWeb {
 	
-	private final DataSource dataSource;
-	private final JdbcTemplate jdbcTemplate;
+	//private final DataSource dataSource;
+	//private final JdbcTemplate jdbcTemplate;
 
 	@Autowired
 	private AuthenticationConfiguration authenticationConfiguration;
 	
 	
-	public BDSeguridadWeb(DataSource dataSource, JdbcTemplate jdbcTemplate) {
+	/*public BDSeguridadWeb(DataSource dataSource, JdbcTemplate jdbcTemplate) {
 	    this.dataSource = dataSource;
 	    this.jdbcTemplate = jdbcTemplate;
-	}
+	}*/
 	
 	@Bean
 	AuthenticationManager authenticationManager() throws Exception {
