@@ -1,5 +1,7 @@
 package com.crud.administradorpedidos.modelo.servicio;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +31,28 @@ public class ServicioUsuario {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
-
+	
+	public List<UsuarioRetornoDTO> enlistaUsuarios(){
+		List<Usuario> usuarios = repositorioUsuario.findAll();
+		
+		List<UsuarioRetornoDTO> usuariosDTO= new ArrayList<>();
+		
+		for(Usuario u : usuarios) {
+			UsuarioRetornoDTO uDTO = new UsuarioRetornoDTO();
+			uDTO.setId(u.getId());
+			uDTO.setUsuario(u.getUsuario());
+			uDTO.setNombre(u.getNombre());
+			uDTO.setAPaterno(u.getApellidoPaterno());
+			uDTO.setAMaterno(u.getApellidoMaterno());
+			uDTO.setPuesto(u.getPuesto());
+			uDTO.setRol(u.getNombreRol());
+			
+			usuariosDTO.add(uDTO);
+		}
+		
+		return usuariosDTO;
+	}
+	
 	public boolean existeUsuario(String dato) {
 		if(dato != null && !dato.equals("")) {
 			

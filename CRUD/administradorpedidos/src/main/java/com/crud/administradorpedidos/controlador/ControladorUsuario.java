@@ -1,5 +1,7 @@
 package com.crud.administradorpedidos.controlador;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,7 +59,10 @@ public class ControladorUsuario {
 		}
 	}*/
 	
-	
+	@GetMapping("/consultaUsuarios")
+	public List<UsuarioRetornoDTO> consultaUsuarios(){
+		return servicioUsuario.enlistaUsuarios();
+	}
 	
 	@GetMapping("/consultaUsuarioNombre")
 	public UsuarioRetornoDTO consultaUsuarioPorNumero(@RequestBody String nombreUsuario) {

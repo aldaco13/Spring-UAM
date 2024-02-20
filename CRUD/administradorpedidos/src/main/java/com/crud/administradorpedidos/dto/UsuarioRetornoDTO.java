@@ -11,6 +11,7 @@ import lombok.Setter;
 @Data
 @Component
 public class UsuarioRetornoDTO {
+	private Long id;
 	private String usuario;
 	private String contrasenia;
 	private String nombre;
