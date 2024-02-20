@@ -57,8 +57,8 @@ public class JwtFiltroValidacion extends BasicAuthenticationFilter{
 					new ObjectMapper()
 					.addMixIn(SimpleGrantedAuthority.class, SimpleGrantedAuthorityJsonCreator.class)
 					.readValue(authoritiesClaims.toString()
-					.getBytes(), 
-					SimpleGrantedAuthority[].class));
+							.getBytes(), 
+							SimpleGrantedAuthority[].class));
 			
 			UsernamePasswordAuthenticationToken tokenAutenticacion = new UsernamePasswordAuthenticationToken(usuario, null, authorities);
 			

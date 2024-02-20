@@ -47,8 +47,20 @@ public class BDSeguridadWeb {
 	public SecurityFilterChain filtroVistas(HttpSecurity http) throws Exception {
 		
 		return http.authorizeHttpRequests((authorize) -> authorize
+				//Se permite cualquier GET de usuario (Consulta de Usuarios)
 				.requestMatchers(HttpMethod.GET, "/usuario/**").permitAll()
+				
+				//Se permite crear usuarios con rol USUARIO
 				.requestMatchers(HttpMethod.POST, "/usuario/registraUsuario").permitAll()
+				
+				//Permisos administrador
+				//Se permite crear usuarios con rol ADMINISTRADOR
+				.requestMatchers(HttpMethod.POST, "/usuario").hasRole("ADMIN")
+				/*//Se permite ELIMINAR pedidos solo a rol ADMINISTRADOR
+				.requestMatchers(HttpMethod.POST, "/pedidos/eliminaPedido/{id}").hasRole("ADMINISTRADOR")
+				//Se permite MODIFICAR pedidos solo a rol ADMINISTRADOR
+				.requestMatchers(HttpMethod.POST, "/pedidos/modificaPedido").hasRole("ADMINISTRADOR")*/
+				
 				.anyRequest().authenticated())
 				.addFilter(new JwtFiltroAutenticacion(authenticationManager()))
 				.addFilter(new JwtFiltroValidacion(authenticationManager()))

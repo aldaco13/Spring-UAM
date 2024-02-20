@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.crud.administradorpedidos.entidades.ItemPedido;
 import com.crud.administradorpedidos.entidades.Rol;
 import com.crud.administradorpedidos.entidades.Usuario;
+import com.crud.administradorpedidos.modelo.servicio.ServicioUsuario;
 import com.crud.administradorpedidos.repositorio.RepositorioItems;
 import com.crud.administradorpedidos.repositorio.RepositorioRol;
 import com.crud.administradorpedidos.repositorio.RepositorioUsuario;
@@ -26,6 +27,9 @@ public class AdministradorPedidosApplication {
 	
 	@Autowired
 	RepositorioRol repositorioRol;
+	
+	@Autowired
+	ServicioUsuario servicioUsuario;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(AdministradorPedidosApplication.class, args);
@@ -71,19 +75,19 @@ public class AdministradorPedidosApplication {
 		
 		Rol rol = new Rol();
 		rol.setRol(1);
-		rol.setNombre("Administrador");
+		rol.setNombre("ADMIN");
 		
 		repositorioRol.save(rol);
 		
 		rol = new Rol();
 		rol.setRol(2);
-		rol.setNombre("Usuario");
+		rol.setNombre("USUARIO");
 		
 		repositorioRol.save(rol);
 		
 		rol = new Rol();
 		rol.setRol(3);
-		rol.setNombre("Cliente");
+		rol.setNombre("CLIENTE");
 		
 		repositorioRol.save(rol);
 		
@@ -106,7 +110,7 @@ public class AdministradorPedidosApplication {
 		Usuario usuario = new Usuario();
 		
 		usuario.setUsuario("oaldacom");
-		usuario.setContrasenia("{noop}pass");
+		usuario.setContrasenia("aldaco13");
 		usuario.setEstatus(1);
 		usuario.setRol(admin);
 		usuario.setNombre("Omar");
@@ -114,22 +118,29 @@ public class AdministradorPedidosApplication {
 		usuario.setApellidoMaterno("Montalvo");
 		usuario.setCorreo("omar.aldaco.m@gmail.com");
 		usuario.setTelefono("5564871618");
+		usuario.setPuesto("Director");
+		usuario.setNombreRol(admin.getNombre());
 		
-		repositorioUsuario.save(usuario);
+		servicioUsuario.registraUsuario(usuario);
+		
+		//repositorioUsuario.save(usuario);
 		
 		usuario = new Usuario();
 		
 		usuario.setUsuario("aldaco");
-		usuario.setContrasenia("{noop}pass");
+		usuario.setContrasenia("pass");
 		usuario.setEstatus(1);
 		usuario.setRol(user);
 		usuario.setNombre("Omar");
 		usuario.setApellidoPaterno("Aldaco");
 		usuario.setApellidoMaterno("Montalvo");
-		usuario.setCorreo("omar.aldaco.m@gmail.com");
+		usuario.setCorreo("omar.aldaco@gmail.com");
 		usuario.setTelefono("5564871618");
+		usuario.setPuesto("Gerente");
+		usuario.setNombreRol(user.getNombre());
 		
-		repositorioUsuario.save(usuario);
+		servicioUsuario.registraUsuario(usuario);
+		//repositorioUsuario.save(usuario);
 		
 		
 	}
