@@ -27,13 +27,10 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import static com.crud.administradorpedidos.security.configuracion.JwtConfiguracionToken.*;
+
 public class JwtFiltroValidacion extends BasicAuthenticationFilter{
 	
-	private static final String HADER_AUTORIZACION = "Authorization";
-	private static final String PREFIJO_TOKEN = "Bearer ";
-	private static final SecretKey LLAVE_SECRETA = Jwts.SIG.HS256.key().build();
-	private static final String CONTENT_TYPE = "application/json";
-
 	public JwtFiltroValidacion(AuthenticationManager authenticationManager) {
 		super(authenticationManager);
 	}

@@ -29,15 +29,11 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import static com.crud.administradorpedidos.security.configuracion.JwtConfiguracionToken.*;
 
 public class JwtFiltroAutenticacion extends UsernamePasswordAuthenticationFilter{
 	
 	private AuthenticationManager authenticationManager;
-	
-	private static final SecretKey LLAVE_SECRETA = Jwts.SIG.HS256.key().build();
-	private static final String PREFIJO_TOKEN = "Bearer ";
-	private static final String HADER_AUTORIZACION = "Authorization";
-	private static final String CONTENT_TYPE = "application/json";
 	
 	public JwtFiltroAutenticacion(AuthenticationManager autenticador) {
 		this.authenticationManager = autenticador;
@@ -80,7 +76,8 @@ public class JwtFiltroAutenticacion extends UsernamePasswordAuthenticationFilter
 		
 		Claims claims =Jwts.claims()
 				.add("authorities", new ObjectMapper().writeValueAsString(roles))
-				 .build();
+				.add("usuario", nombreUsuario)
+				.build();
 		
 		
 		String token = Jwts.builder()
@@ -118,7 +115,7 @@ public class JwtFiltroAutenticacion extends UsernamePasswordAuthenticationFilter
 		response.setContentType(CONTENT_TYPE);
 		
 		
-		super.unsuccessfulAuthentication(request, response, failed);
+		//super.unsuccessfulAuthentication(request, response, failed);
 	}
 
 }
